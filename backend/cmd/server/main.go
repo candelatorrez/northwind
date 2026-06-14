@@ -52,10 +52,18 @@ func main() {
 	clientRepository := repository.NewClientRepository(db)
 	invoiceRepository := repository.NewInvoiceRepository(db)
 	riskRepository := repository.NewRiskRepository(db)
+	actionRepository := repository.NewActionRepository(db)
 
 	dashboardService := service.NewDashboardService(clientRepository, invoiceRepository, riskRepository)
+	clientService := service.NewClientService(clientRepository, riskRepository)
+	invoiceService := service.NewInvoiceServiceWithClient(invoiceRepository, riskRepository, clientRepository)
+	actionService := service.NewActionService(actionRepository)
 
 	dashboardHandler := api.NewDashboardHandler(dashboardService)
+	clientHandler := api.NewClientHandler(clientService)
+	invoiceHandler := api.NewInvoiceHandler(invoiceService)
+	riskHandler := api.NewRiskHandler(riskRepository)
+	actionHandler := api.NewActionHandler(actionService)
 
 	router := api.NewRouter()
 
@@ -63,6 +71,10 @@ func main() {
 		router,
 		api.Handlers{
 			DashboardHandler: dashboardHandler,
+			ClientHandler:    clientHandler,
+			InvoiceHandler:   invoiceHandler,
+			RiskHandler:      riskHandler,
+			ActionHandler:    actionHandler,
 		},
 	)
 
