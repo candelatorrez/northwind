@@ -4,6 +4,10 @@ import "github.com/gin-gonic/gin"
 
 type Handlers struct {
 	DashboardHandler *DashboardHandler
+	ClientHandler    *ClientHandler
+	InvoiceHandler   *InvoiceHandler
+	RiskHandler      *RiskHandler
+	ActionHandler    *ActionHandler
 }
 
 func RegisterRoutes(router *gin.Engine, handlers Handlers) {
@@ -13,5 +17,24 @@ func RegisterRoutes(router *gin.Engine, handlers Handlers) {
 		},
 	)
 
+	//Dashboard routes
 	router.GET("/dashboard/metrics", handlers.DashboardHandler.GetMetrics)
+	router.GET("/dashboard/clients", handlers.DashboardHandler.GetClients)
+
+	// Client routes
+	router.GET("/clients", handlers.ClientHandler.GetAll)
+	router.GET("/clients/:id", handlers.ClientHandler.GetByID)
+	router.PATCH("/clients/:id/status", handlers.ClientHandler.UpdateStatus)
+
+	// Invoice routes
+	router.GET("/clients/:clientId/invoices", handlers.InvoiceHandler.GetByClientID)
+	router.POST("/invoices/:invoiceId/pay", handlers.InvoiceHandler.MarkAsPaid)
+	router.POST("/clients/:clientId/risk-snapshots", handlers.InvoiceHandler.CalculateRisk)
+
+	// Risk routes
+	router.GET("/clients/:clientId/risk", handlers.RiskHandler.GetByClientID)
+
+	// Collection action routes
+	router.GET("/clients/:clientId/actions", handlers.ActionHandler.GetByClientID)
+	router.POST("/clients/:clientId/actions", handlers.ActionHandler.Create)
 }

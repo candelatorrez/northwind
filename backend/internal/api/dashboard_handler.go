@@ -28,3 +28,19 @@ func (h *DashboardHandler) GetMetrics(c *gin.Context) {
 
 	c.JSON(http.StatusOK, metrics)
 }
+
+func (h *DashboardHandler) GetClients(c *gin.Context) {
+	clients, err := h.service.GetClientsWithRisk()
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+
+		return
+	}
+
+	if clients == nil {
+		clients = []map[string]interface{}{}
+	}
+
+	c.JSON(http.StatusOK, clients)
+}
