@@ -29,7 +29,7 @@ func (r *RiskRepository) Create(risk *domain.RiskSnapshot) error {
 	return r.db.Create(risk).Error
 }
 
-func (r *RiskRepository) UpdateClientID(clientID uint, score int, level, reason string) error {
+func (r *RiskRepository) UpdateByClientID(clientID uint, score int, level, reason string) error {
 	risk := domain.RiskSnapshot{
 		ClientID:  clientID,
 		Score:     score,
