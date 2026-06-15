@@ -11,13 +11,14 @@ type Handlers struct {
 }
 
 func RegisterRoutes(router *gin.Engine, handlers Handlers) {
+	// Health check
 	router.GET("/health",
 		func(c *gin.Context) {
 			c.JSON(200, gin.H{"status": "ok"})
 		},
 	)
 
-	//Dashboard routes
+	// Dashboard routes
 	router.GET("/dashboard/metrics", handlers.DashboardHandler.GetMetrics)
 	router.GET("/dashboard/clients", handlers.DashboardHandler.GetClients)
 
@@ -27,14 +28,14 @@ func RegisterRoutes(router *gin.Engine, handlers Handlers) {
 	router.PATCH("/clients/:id/status", handlers.ClientHandler.UpdateStatus)
 
 	// Invoice routes
-	router.GET("/clients/:clientId/invoices", handlers.InvoiceHandler.GetByClientID)
-	router.POST("/invoices/:invoiceId/pay", handlers.InvoiceHandler.MarkAsPaid)
-	router.POST("/clients/:clientId/risk-snapshots", handlers.InvoiceHandler.CalculateRisk)
+	router.GET("/clients/:id/invoices", handlers.InvoiceHandler.GetByClientID)
+	router.POST("/invoices/:id/pay", handlers.InvoiceHandler.MarkAsPaid)
+	router.POST("/clients/:id/risk-snapshots", handlers.InvoiceHandler.CalculateRisk)
 
 	// Risk routes
-	router.GET("/clients/:clientId/risk", handlers.RiskHandler.GetByClientID)
+	router.GET("/clients/:id/risk", handlers.RiskHandler.GetByClientID)
 
 	// Collection action routes
-	router.GET("/clients/:clientId/actions", handlers.ActionHandler.GetByClientID)
-	router.POST("/clients/:clientId/actions", handlers.ActionHandler.Create)
+	router.GET("/clients/:id/actions", handlers.ActionHandler.GetByClientID)
+	router.POST("/clients/:id/actions", handlers.ActionHandler.Create)
 }

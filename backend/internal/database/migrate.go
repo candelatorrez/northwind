@@ -11,6 +11,7 @@ func Migrate(db *gorm.DB) error {
 		&domain.Client{},
 		&domain.Invoice{},
 		&domain.RiskSnapshot{},
+		&domain.CollectionAction{},
 	)
 
 }

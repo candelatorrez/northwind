@@ -3,6 +3,7 @@ package api
 import (
 	"net/http"
 
+	"github.com/candelatorrez/northwind/internal/domain"
 	"github.com/candelatorrez/northwind/internal/service"
 	"github.com/gin-gonic/gin"
 )
@@ -39,7 +40,7 @@ func (h *DashboardHandler) GetClients(c *gin.Context) {
 	}
 
 	if clients == nil {
-		clients = []map[string]interface{}{}
+		clients = []domain.ClientDashboardDTO{}
 	}
 
 	c.JSON(http.StatusOK, clients)

@@ -21,7 +21,7 @@ func NewActionHandler(actionService *service.ActionService) *ActionHandler {
 }
 
 func (h *ActionHandler) GetByClientID(c *gin.Context) {
-	clientID, err := strconv.ParseUint(c.Param("clientId"), 10, 32)
+	clientID, err := strconv.ParseUint(c.Param("id"), 10, 32)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid client ID"})
 		return
@@ -41,7 +41,7 @@ func (h *ActionHandler) GetByClientID(c *gin.Context) {
 }
 
 func (h *ActionHandler) Create(c *gin.Context) {
-	clientID, err := strconv.ParseUint(c.Param("clientId"), 10, 32)
+	clientID, err := strconv.ParseUint(c.Param("id"), 10, 32)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid client ID"})
 		return

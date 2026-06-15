@@ -41,6 +41,6 @@ func (s *DashboardService) GetMetrics() (*domain.DashboardMetrics, error) {
 	}, nil
 }
 
-func (s *DashboardService) GetClientsWithRisk() ([]map[string]interface{}, error) {
+func (s *DashboardService) GetClientsWithRisk() ([]domain.ClientDashboardDTO, error) {
 	return s.clientRepository.FindAllWithRisk()
 }

@@ -29,29 +29,47 @@ func (r *ClientRepository) FindByID(id uint) (*domain.Client, error) {
 	return &client, err
 }
 
-func (r *ClientRepository) FindAllWithRisk() ([]map[string]interface{}, error) {
-	var result []map[string]interface{}
+func (r *ClientRepository) FindAllWithRisk() ([]domain.ClientDashboardDTO, error) {
+	var clients []domain.ClientDashboardDTO
 
-	err := r.db.Model(domain.Client{}).
-		Select(
-			"clients.id",
-			"clients.name",
-			"clients.email",
-			"clients.segment",
-			"clients.status",
-			"clients.monthly_billing",
-			"clients.created_at",
-			"COALESCE(ris_snapshots.score, 0) as risk_score",
-			"COALESCE(risk_snapshots.level, 'low') as risk_level",
-			"MAX(collection_actions.created_at) as last_action_at",
-		).
-		Joins("LEFT JOIN risk_snapshots ON risk_snapshots.client_id = clients.id").
-		Joins("LEFT JOIN collection_actions ON collection_actions.client_id = clients.id").
-		Group("clients.id").
-		Order("risk_snapshots.score DESC").
-		Scan(&result).Error
+	query := `
+		WITH latest_risk AS (
+			SELECT DISTINCT ON (client_id)
+				client_id,
+				score,
+				level
+			FROM risk_snapshots
+			ORDER BY client_id, created_at DESC
+		),
+		latest_action AS (
+			SELECT
+				client_id,
+				MAX(created_at) as last_action_at
+			FROM collection_actions
+			GROUP BY client_id
+		)
+		SELECT
+			c.id,
+			c.name,
+			c.email,
+			c.segment,
+			c.status,
+			c.monthly_billing as monthly_billing,
+			c.created_at as created_at,
+			COALESCE(lr.score, 0) as risk_score,
+			COALESCE(NULLIF(lr.level, ''), 'low') as risk_level,
+			la.last_action_at
+		FROM clients c
+		LEFT JOIN latest_risk lr
+			ON lr.client_id = c.id
+		LEFT JOIN latest_action la
+			ON la.client_id = c.id
+		ORDER BY COALESCE(lr.score, 0) DESC
+	`
 
-	return result, err
+	err := r.db.Raw(query).Scan(&clients).Error
+
+	return clients, err
 }
 
 func (r *ClientRepository) Count() (int64, error) {

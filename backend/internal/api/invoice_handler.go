@@ -20,7 +20,7 @@ func NewInvoiceHandler(invoiceService *service.InvoiceService) *InvoiceHandler {
 }
 
 func (h *InvoiceHandler) GetByClientID(c *gin.Context) {
-	clientID, err := strconv.ParseUint(c.Param("clientId"), 10, 32)
+	clientID, err := strconv.ParseUint(c.Param("id"), 10, 32)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid client ID"})
 		return
@@ -40,7 +40,7 @@ func (h *InvoiceHandler) GetByClientID(c *gin.Context) {
 }
 
 func (h *InvoiceHandler) MarkAsPaid(c *gin.Context) {
-	invoiceID, err := strconv.ParseUint(c.Param("invoiceId"), 10, 32)
+	invoiceID, err := strconv.ParseUint(c.Param("id"), 10, 32)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid invoice ID"})
 		return
@@ -55,7 +55,7 @@ func (h *InvoiceHandler) MarkAsPaid(c *gin.Context) {
 }
 
 func (h *InvoiceHandler) CalculateRisk(c *gin.Context) {
-	clientID, err := strconv.ParseUint(c.Param("clientId"), 10, 32)
+	clientID, err := strconv.ParseUint(c.Param("id"), 10, 32)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid client ID"})
 		return

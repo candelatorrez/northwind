@@ -20,7 +20,7 @@ func NewInvoiceRepository(db *gorm.DB) *InvoiceRepository {
 func (r *InvoiceRepository) FindByClientID(clientID uint) ([]domain.Invoice, error) {
 	var invoices []domain.Invoice
 
-	err := r.db.Where("client_io = ?", clientID).Order("due_date DESC").Find(&invoices).Error
+	err := r.db.Where("client_id = ?", clientID).Order("due_date DESC").Find(&invoices).Error
 
 	return invoices, err
 }
@@ -45,7 +45,7 @@ func (r *InvoiceRepository) MarkAsPaid(id uint) error {
 func (r *InvoiceRepository) CountOverdue() (int64, error) {
 	var count int64
 
-	err := r.db.Model(&domain.Invoice{}).Where("status=?", "overdue").Count(&count).Error
+	err := r.db.Model(&domain.Invoice{}).Where("status = ?", "overdue").Count(&count).Error
 
 	return count, err
 }
@@ -69,7 +69,7 @@ func (r *InvoiceRepository) GetDeliquencyRate() (float64, error) {
 
 	var overdue float64
 
-	r.db.Model(&domain.Invoice{}).Where("status=?", "overdue").Select("COALESCE(SUM(amount), 0)").Scan(&overdue)
+	r.db.Model(&domain.Invoice{}).Where("status = ?", "overdue").Select("COALESCE(SUM(amount), 0)").Scan(&overdue)
 
 	return (overdue / total) * 100, nil
 }
