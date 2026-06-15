@@ -1,0 +1,292 @@
+$color-blue-600: #2563eb;
+$color-blue-700: #1d4ed8;
+
+$color-gray-50: #f9fafb;
+$color-gray-200: #e5e7eb;
+$color-gray-300: #d1d5db;
+$color-gray-500: #6b7280;
+$color-gray-600: #4b5563;
+$color-gray-700: #374151;
+$color-gray-900: #111827;
+
+$color-white: #ffffff;
+
+$font-size-xs: 0.75rem;  
+$font-size-sm: 0.875rem;
+$font-size-2xl: 1.5rem;  
+
+$font-weight-medium: 500;
+$font-weight-semibold: 600;
+$font-weight-bold: 700;
+
+$space-1: 0.25rem;
+$space-2: 0.5rem;
+$space-3: 0.75rem;
+$space-4: 1rem;
+$space-6: 1.5rem;
+
+$radius-md: 0.375rem;
+$radius-lg: 0.5rem;
+$border-default: 1px solid $color-gray-200;
+$border-input: 1px solid $color-gray-300;
+
+$breakpoint-md: 768px;
+
+
+
+.clientDetail {
+  display: flex;
+  flex-direction: column;
+  gap: $space-6;
+}
+
+.backButton {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-1;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: $color-blue-600;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+
+  &:hover {
+    color: $color-blue-700;
+  }
+}
+
+.infoGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $space-6;
+
+  @media (min-width: $breakpoint-md) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.billingLabel {
+  font-size: $font-size-sm;
+  color: $color-gray-600;
+  margin-bottom: $space-1;
+}
+
+.billingAmount {
+  font-size: $font-size-2xl;
+  font-weight: $font-weight-bold;
+  color: $color-gray-900;
+}
+
+.riskCard {
+  display: flex;
+  flex-direction: column;
+  gap: $space-3;
+}
+
+.riskHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.riskLabel {
+  font-size: $font-size-sm;
+  color: $color-gray-600;
+}
+
+.riskReason {
+  font-size: $font-size-sm;
+  color: $color-gray-700;
+}
+
+.statusSelectWrapper {
+  display: flex;
+  align-items: center;
+
+  label {
+    font-size: $font-size-sm;
+    color: $color-gray-600;
+    margin-right: $space-2;
+  }
+}
+
+.statusSelect {
+  padding: $space-1 $space-3;
+  border: $border-input;
+  border-radius: $radius-md;
+  font-size: $font-size-sm;
+  background-color: $color-white;
+}
+
+.tableWrapper {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+
+  th {
+    text-align: left;
+    padding: $space-2 $space-4;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-semibold;
+    color: $color-gray-900;
+    border-bottom: $border-default;
+  }
+
+  tbody tr {
+    border-bottom: $border-default;
+
+    &:hover {
+      background-color: $color-gray-50;
+    }
+  }
+
+  td {
+    padding: $space-3 $space-4;
+    font-size: $font-size-sm;
+    color: $color-gray-900;
+  }
+}
+
+.cellAmount {
+  font-weight: $font-weight-semibold;
+}
+
+.cellDate {
+  color: $color-gray-600;
+}
+
+.markPaidButton {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: $color-blue-600;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+
+  &:hover {
+    color: $color-blue-700;
+  }
+}
+
+.actionForm {
+  margin-bottom: $space-6;
+  padding: $space-4;
+  background-color: $color-gray-50;
+  border-radius: $radius-lg;
+  border: $border-default;
+}
+
+.actionFormTitle {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  color: $color-gray-900;
+  margin-bottom: $space-3;
+}
+
+.actionFormFields {
+  display: flex;
+  flex-direction: column;
+  gap: $space-3;
+}
+
+.fieldLabel {
+  display: block;
+  font-size: $font-size-sm;
+  color: $color-gray-700;
+  margin-bottom: $space-1;
+}
+
+.fieldInput {
+  width: 100%;
+  padding: $space-2 $space-3;
+  border: $border-input;
+  border-radius: $radius-lg;
+  font-size: $font-size-sm;
+  font-family: inherit;
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px $color-blue-600;
+    border-color: transparent;
+  }
+}
+
+.submitButton {
+  width: 100%;
+  padding: $space-2 $space-4;
+  background-color: $color-blue-600;
+  color: $color-white;
+  border: none;
+  border-radius: $radius-lg;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  cursor: pointer;
+
+  &:hover:not(:disabled) {
+    background-color: $color-blue-700;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.actionsList {
+  display: flex;
+  flex-direction: column;
+  gap: $space-3;
+}
+
+.actionItem {
+  padding: $space-4;
+  border: $border-default;
+  border-radius: $radius-lg;
+}
+
+.actionItemRow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.actionItemContent {
+  flex: 1;
+}
+
+.actionItemHeader {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  margin-bottom: $space-1;
+}
+
+.actionType {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  color: $color-gray-900;
+}
+
+.actionPerformedBy {
+  font-size: $font-size-xs;
+  color: $color-gray-500;
+}
+
+.actionNotes {
+  font-size: $font-size-sm;
+  color: $color-gray-700;
+}
+
+.actionDate {
+  flex-shrink: 0;
+  margin-left: $space-4;
+  font-size: $font-size-xs;
+  color: $color-gray-500;
+  white-space: nowrap;
+}
