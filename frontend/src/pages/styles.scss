@@ -1,0 +1,26 @@
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: 24px; 
+
+  &__kpis {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    padding-top: 32px;  
+    padding-bottom: 32px; 
+
+    @media (min-width: 768px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media (min-width: 1024px) {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  &__tableScroll {
+    max-height: 60vh;
+    overflow-y: auto;
+  }
+}

@@ -1,4 +1,6 @@
 import React, { useState, useMemo } from 'react';
+import './styles.scss';
+
 import { FilterBar } from '../components/FilterBar';
 import { Table } from '../components/Table';
 import { LoadingState, ErrorState, EmptyState } from '../components/States';
@@ -11,6 +13,7 @@ import { RiskBadge, SegmentBadge, StatusBadge } from '../components/Badge';
 const Dashboard: React.FC = () => {
   const { metrics, loading: metricsLoading } = useDashboardMetrics();
   const { clients, loading: clientsLoading, error: clientsError } = useDashboardClients();
+
   const [filters, setFilters] = useState<ClientFilters>({});
   const [selectedClientId, setSelectedClientId] = useState<string | null>(null);
 
@@ -25,15 +28,10 @@ const Dashboard: React.FC = () => {
           return false;
         }
       }
-      if (filters.segment && client.segment !== filters.segment) {
-        return false;
-      }
-      if (filters.status && client.status !== filters.status) {
-        return false;
-      }
-      if (filters.riskLevel && client.riskLevel !== filters.riskLevel) {
-        return false;
-      }
+      if (filters.segment && client.segment !== filters.segment) return false;
+      if (filters.status && client.status !== filters.status) return false;
+      if (filters.riskLevel && client.riskLevel !== filters.riskLevel) return false;
+
       return true;
     });
   }, [clients, filters]);
@@ -48,43 +46,31 @@ const Dashboard: React.FC = () => {
   }
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div>
-        <h1 className="text-3xl font-bold text-gray-900">Northwind</h1>
-      </div>
-
-      {/* KPI Cards */}
+    <div className="dashboard">
+      {/* KPI */}
       {metricsLoading ? (
         <LoadingState />
       ) : metrics ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="dashboard__kpis">
           <KPICard
-            label="Total Cartera"
+            label="Monthly Wallet"
             value={`$${(metrics.outstandingAmount / 1000).toFixed(0)}K`}
             unit="USD"
           />
           <KPICard
-            label="Mora"
+            label="Current Delinquency"
             value={`${Math.round((metrics.overdueInvoices / 420) * 100)}%`}
-            highlight={true}
+            highlight
           />
-          <KPICard
-            label="High Risk Clients"
-            value={metrics.highRiskClients}
-          />
-          <KPICard
-            label="Overdue Invoices"
-            value={metrics.overdueInvoices}
-          />
+          <KPICard label="High Risk Clients" value={metrics.highRiskClients} />
+          <KPICard label="Overdue Invoices" value={metrics.overdueInvoices} />
         </div>
       ) : null}
 
-      {/* Filters */}
       <FilterBar onFiltersChange={setFilters} />
 
-      {/* Clients Table */}
       <Card title={`Clients (${filteredClients.length})`}>
+        <div className='dashboard__tableScroll'>
         {clientsLoading ? (
           <LoadingState />
         ) : clientsError ? (
@@ -141,6 +127,7 @@ const Dashboard: React.FC = () => {
             onRowClick={(item) => setSelectedClientId(item.id)}
           />
         )}
+        </div>
       </Card>
     </div>
   );
